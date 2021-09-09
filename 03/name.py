@@ -85,3 +85,5 @@ turtle.penup()
 turtle.goto(-15, -30)
 turtle.pendown()
 turtle.circle(30)
+
+turtle.exitonclick()
