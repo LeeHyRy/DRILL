@@ -48,6 +48,5 @@ while 1:
     move_rect()
     move_circle()
 
-exitonclick()
 close_canvas()
 
