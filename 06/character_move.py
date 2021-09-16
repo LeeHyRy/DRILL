@@ -44,8 +44,10 @@ open_canvas()
 grass = load_image('grass.png')
 character = load_image('character.png')
 
-move_rect()
-move_circle()
+while 1:
+    move_rect()
+    move_circle()
 
+exitonclick()
 close_canvas()
 
