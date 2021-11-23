@@ -8,23 +8,15 @@ import game_world
 
 from boy import Boy
 from grass import Grass
-from bird import Bird
 from ball import Ball
-
+from brick import Brick
 
 name = "MainState"
 
 boy = None
 grass = None
-bird = None
-bird2 = None
-bird3 = None
-bird4 = None
-bird5 = None
 balls = []
-big_balls = []
-
-
+bricks = None
 
 def collide(a, b):
     # fill here
@@ -32,7 +24,7 @@ def collide(a, b):
     left_b, bottom_b, right_b, top_b = b.get_bb()
 
     if left_a > right_b: return False
-    if right_a < left_b : return False
+    if right_a < left_b: return False
     if top_a < bottom_b: return False
     if bottom_a > top_b: return False
 
@@ -50,31 +42,9 @@ def enter():
     grass = Grass()
     game_world.add_object(grass, 0)
 
-    global balls
-    balls = [Ball() for i in range(10)]
-    game_world.add_object(balls, 1)
-
-
-
-    global bird
-    global bird2
-    global bird3
-    global bird4
-    global bird5
-    bird = Bird()
-    bird2 = Bird()
-    bird3 = Bird()
-    bird4 = Bird()
-    bird5 = Bird()
-    game_world.add_object(bird, 1)
-    game_world.add_object(bird2, 1)
-    game_world.add_object(bird3, 1)
-    game_world.add_object(bird4, 1)
-    game_world.add_object(bird5, 1)
-
-    # fill here for balls
-
-
+    global bricks
+    bricks = [Brick(300+300*i, 100+50*i) for i in range(5)]
+    game_world.add_objects(bricks, 1)
 
 
 
@@ -104,11 +74,19 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
 
-    # fill here for collision check
-    for ball in balls:
-        if collide(boy, ball):
+    for ball in balls.copy():
+        if collide(ball, grass):
+            ball.stop()
+        if collide(ball, boy):
             balls.remove(ball)
             game_world.remove_object(ball)
+
+    for brick in bricks:
+        if collide(brick, boy):
+            boy.y = brick.y + 20 + 30
+            boy.x += game_framework.frame_time * brick.speed
+            boy.x = clamp(brick.x - 90, boy.x, brick.x + 90)
+
 
 
 def draw():
